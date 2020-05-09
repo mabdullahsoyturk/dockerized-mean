@@ -2,10 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const postsRoutes = require("./routes/posts");
+const usersRoutes = require("./routes/users");
 
 const app = express();
 
-mongoose.connect("mongodb://database/test");
+mongoose.connect("mongodb://database/test", { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -18,6 +19,7 @@ app.use((req,res,next) => {
 });
 
 app.use("/api/posts", postsRoutes);
+app.use("/api/users", usersRoutes);
 
 
 module.exports = app;
