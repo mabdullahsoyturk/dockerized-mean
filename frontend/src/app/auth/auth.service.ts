@@ -9,7 +9,7 @@ export class AuthService {
   private token: string;
   private authStatusListener = new Subject<boolean>();
   private isAuthenticated = false;
-  private tokenTimer: NodeJS.Timer;
+  private tokenTimer: any;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
