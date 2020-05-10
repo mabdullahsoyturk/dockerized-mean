@@ -6,9 +6,6 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 router.post("/signup", (req,res,next) => {
-  console.log("User add executed");
-  console.log(req.body);
-
   bcrypt.hash(req.body.password, 10)
         .then(hash => {
           const user = new User({ 
@@ -16,7 +13,6 @@ router.post("/signup", (req,res,next) => {
             password: hash 
           });
           user.save().then(result => {
-            console.log(result);
             res.status(201).json({
               message:"User Added Successfully",
               id: result._id
@@ -81,8 +77,6 @@ router.get("/:id", (req,res,next) => {
 })
 
 router.put("/:id", (req,res,next) => {
-  console.log("User update executed");
-  console.log(req.body);
   User.updateOne({_id: req.params.id}, { email: req.body.email, password: req.body.password }).then(result => {
     res.status(200).json({ message: "Update Sucessful" });
   });

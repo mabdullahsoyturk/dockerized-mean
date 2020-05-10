@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthData } from './auth-data.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import * as GLOBALS from '../app.globals';
 
 @Injectable({providedIn:"root"})
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
 
   createUser(email: string, password: string) {
       const authData: AuthData = { email: email, password: password };
-      this.httpClient.post("http://localhost:3000/api/users/signup", authData)
+      this.httpClient.post(GLOBALS.USERS_SIGNUP_URL, authData)
           .subscribe(response => {
             console.log(response);
           });
@@ -35,13 +36,11 @@ export class AuthService {
 
   loginUser(email: string, password: string) {
     const authData: AuthData = { email: email, password: password };
-    this.httpClient.post<{token: string, expiresIn: number}>("http://localhost:3000/api/users/login", authData)
+    this.httpClient.post<{token: string, expiresIn: number}>(GLOBALS.USERS_LOGIN_URL, authData)
         .subscribe(response => {
-          console.log(response);
           this.token = response.token;
           if(this.token) {
             const expiresInDuration = response.expiresIn;
-            console.log(expiresInDuration);
             this.setAuthTimer(expiresInDuration);
             this.isAuthenticated = true;
             this.authStatusListener.next(true);

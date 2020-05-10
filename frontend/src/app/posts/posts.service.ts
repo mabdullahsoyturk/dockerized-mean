@@ -4,6 +4,7 @@ import { Subject } from "rxjs";
 import { HttpClient } from '@angular/common/http';
 import { map } from "rxjs/operators";
 import { Router } from '@angular/router';
+import * as GLOBALS from '../app.globals';
 
 @Injectable({providedIn:"root"})
 export class PostsService {
@@ -13,11 +14,11 @@ export class PostsService {
   constructor(private httpClient:HttpClient, private router: Router) {}
 
   getPost(id: string) {
-    return this.httpClient.get<{_id:string, title:string, content:string}>("http://localhost:3000/api/posts/" + id);
+    return this.httpClient.get<{_id:string, title:string, content:string}>(GLOBALS.POSTS_URL + "/" + id);
   }
 
   getPosts() {
-    return this.httpClient.get<{message: string, posts: any}>("http://localhost:3000/api/posts")
+    return this.httpClient.get<{message: string, posts: any}>(GLOBALS.POSTS_URL)
       .pipe(map((postData) => {
         return postData.posts.map(post => {
           return {
@@ -38,7 +39,7 @@ export class PostsService {
   }
 
   addPost(post: Post) {
-    this.httpClient.post<{message:string, id:string}>("http://localhost:3000/api/posts", post)
+    this.httpClient.post<{message:string, id:string}>(GLOBALS.POSTS_URL, post)
       .subscribe((responseData) => {
         const id = responseData.id;
         post.id = id;
@@ -49,7 +50,7 @@ export class PostsService {
   }
 
   editPost(post: Post) {
-    this.httpClient.put<{message:string}>("http://localhost:3000/api/posts/" + post.id, post)
+    this.httpClient.put<{message:string}>(GLOBALS.POSTS_URL + "/" + post.id, post)
       .subscribe((responseData) => {
           const updatedPosts = [...this.posts];
           const oldPostIndex = updatedPosts.findIndex(p => p.id == post.id);
@@ -61,7 +62,7 @@ export class PostsService {
   }
 
   deletePost(postId:string) {
-    this.httpClient.delete("http://localhost:3000/api/posts/" + postId)
+    this.httpClient.delete(GLOBALS.POSTS_URL + "/" + postId)
       .subscribe(() => {
           const updatedPosts = this.posts.filter(post => post.id != postId);
           this.posts = updatedPosts;

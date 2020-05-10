@@ -5,11 +5,8 @@ const checkAuth = require("../middleware/auth");
 const router = express.Router();
 
 router.post("", checkAuth, (req,res,next) => {
-  console.log("Backed add executed");
-  console.log(req.body);
   post = new Post({ title: req.body.title, content: req.body.content });
   post.save().then(result => {
-    console.log(result);
     res.status(201).json({
       message:"Post Added Successfully",
       id: result._id
@@ -37,8 +34,6 @@ router.get("/:id", (req,res,next) => {
 })
 
 router.put("/:id", checkAuth, (req,res,next) => {
-  console.log("Backed update executed");
-  console.log(req.body);
   Post.updateOne({_id: req.params.id}, { title: req.body.title, content: req.body.content }).then(result => {
     res.status(200).json({ message: "Update Sucessful" });
   });
