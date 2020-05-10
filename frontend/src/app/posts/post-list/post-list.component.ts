@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  posts: Post[] = [];
+  public posts: Post[] = [];
   private postsSub: Subscription;
   private authSub: Subscription;
   public isLoading = false;
@@ -19,12 +19,14 @@ export class PostListComponent implements OnInit, OnDestroy {
   public postsPerPage = 2;
   public pageSizeOptions = [1,2,5,10];
   public isAuthenticated = false;
+  public userId: string;
 
   constructor(public postsService: PostsService, public authService: AuthService) {
   }
   ngOnInit(): void {
     this.isLoading = true;
     this.postsService.getPosts();
+    this.userId = this.authService.getUserId();
     this.postsSub = this.postsService
                         .getPostUpdateListener()
                         .subscribe((posts: Post[]) => {
@@ -37,6 +39,7 @@ export class PostListComponent implements OnInit, OnDestroy {
                        .getAuthStatusListener()
                        .subscribe(isAuthenticated => {
                           this.isAuthenticated = isAuthenticated;
+                          this.userId = this.authService.getUserId();
                        });
   }
 

@@ -14,7 +14,12 @@ export class PostsService {
   constructor(private httpClient:HttpClient, private router: Router) {}
 
   getPost(id: string) {
-    return this.httpClient.get<{_id:string, title:string, content:string}>(GLOBALS.POSTS_URL + "/" + id);
+    return this.httpClient.get<{
+      _id:string,
+      title:string,
+      content:string,
+      creator: string
+    }>(GLOBALS.POSTS_URL + "/" + id);
   }
 
   getPosts() {
@@ -24,11 +29,13 @@ export class PostsService {
           return {
             title: post.title,
             content: post.content,
-            id: post._id
+            id: post._id,
+            creator: post.creator
           };
         });
       }))
       .subscribe(mappedPosts => {
+        console.log(mappedPosts);
         this.posts = mappedPosts;
         this.postsUpdated.next([...this.posts]);
       });
