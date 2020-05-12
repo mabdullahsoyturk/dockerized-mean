@@ -35,7 +35,7 @@ export class AuthService {
       const authData: AuthData = { email: email, password: password };
       this.httpClient.post(GLOBALS.USERS_SIGNUP_URL, authData)
           .subscribe(response => {
-            console.log(response);
+            this.loginUser(email, password);
           });
   }
 
@@ -70,8 +70,6 @@ export class AuthService {
       return;
     }
     const now = new Date();
-    console.log(now.getTime());
-    console.log(authInfo.expirationDate.getTime());
     const expiresIn = authInfo.expirationDate.getTime() - now.getTime();
 
     if(expiresIn > 0) {

@@ -35,7 +35,6 @@ export class PostsService {
         });
       }))
       .subscribe(mappedPosts => {
-        console.log(mappedPosts);
         this.posts = mappedPosts;
         this.postsUpdated.next([...this.posts]);
       });
