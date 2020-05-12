@@ -35,7 +35,7 @@ export class AuthService {
       const authData: AuthData = { email: email, password: password };
       this.httpClient.post(GLOBALS.USERS_SIGNUP_URL, authData)
           .subscribe(response => {
-            this.loginUser(email, password);
+            this.router.navigate(["/login"]);
           });
   }
 
